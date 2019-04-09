@@ -197,9 +197,6 @@
 						iL.style.cssText = "cursor:hand;cursor:pointer;display:block;position:absolute;width:400px;height:50px;top:-210px;left:0px;right:0px;margin:auto;z-index:9999"
 						tV.style.cssText = "cursor:hand;cursor:pointer;display:block;position:absolute;width:400px;height:50px;top:400px;left:0px;right:0px;margin:auto;z-index:9999"
 						iC2.style.cssText = "display:none;position:absolute;width:400px;height:400px;top:0px;bottom:0px;left:0px;right:0px;margin:auto;z-index:99999;background:#333;opacity:0.5"
-						tV.innerHTML="<img onclick='' onmouseover='this.src=i26' onmouseout='this.src=i26g' src='assets/images/i26g.png' style='margin-top:-5px'><img onclick='register_pattern()' onmouseover='this.src=i20' onmouseout='this.src=i20g' src='assets/images/i20g.png'><img onmouseover='this.src=i09' onmouseout='this.src=i09g' src='assets/images/i09g.png'><img title='Reset and Start Over' class='hastip' onclick='reset_board()' src='assets/images/i11g.png'><img onclick='exit_pattern()' title='Close this and return to the main screen' align=right class='hastip' src='assets/images/x_pink.png'>";
-						iT.innerHTML="<span id='iT' style='color:red;font-family:Open Sans Condensed;font-size:32px'>New User Registration</span><br><br><span id='iT' style='color:#f0f0f0;font-family:Open Sans Condensed;font-size:18px'>Enter a Password and draw a pattern. Once done, it will be encrypted and auto saved. Thats it! To login the next time, all you have to do is enter your user name and draw your password. On ANY site that uses VisualLogin. You will nenver have to remember your passwords again. More info? <a href=''>Click Here for Help</a><br></span><br><span style='color:orange;font-family:Open Sans Condensed;font-size:18px'>To draw a pattern, simply click on the first dot and drag mouse over other dots you want to include as part of your pattern,</span>";
-						iL.innerHTML="<span id='iL' style='color:#f0f0f0;font-family:Open Sans Condensed;font-size:32px;font-weight:300;color:orange'>Welcome to Visual Login</span><br><br><span style='font-size:18px;color:#f0f0f0;font-family:Open Sans Condensed'>Draw your pattern to login.<br><br>Click on second icon below if you are a new member and wish to register.</span>"
 						iM.id="iM"
 						iC.id="iC"
 						iC.appendChild(bar[1][2])
@@ -286,8 +283,7 @@
 								if(startLine){
 									x = e.pageX;
 									y = e.pageY;
-									last_x=x
-									last_y=y
+									console.log(last_x,last_y)
 									setTimeout('createLine('+startX+','+startY+','+x+','+y+')',10)
 								}
 							})
@@ -310,6 +306,7 @@
 										dragging=true
 										x_prev=e.target.id*1
 										pass=x_prev+','
+										console.log(last_x,last_y)
 									}); 
 									
 									div[r,c].addEventListener("mouseup", function(e){
@@ -401,6 +398,8 @@
 												last_y=y
 												e.target.style.cursor='crosshair'
 												console.log('setting x_curr: '+x_curr)
+												console.log('New Last x and y: ')
+												console.log(last_x,last_y)
 											if (x_prev){
 												if (bar[x_prev*1][x_curr*1]) {
 													bar[x_prev*1][x_curr*1].style.display='block'
@@ -465,34 +464,35 @@
 						}
 
 						function createLine(x1,y1, x2,y2){
-						//if (dragging) {
-							if (startLine) $('.line').fadeOut(100, function(){ $(this).remove(); });
-								dX=0
-								dY=0
-								if ((posX > 37.5) && (posX <= 60)) {
-									var dX=posX-37.5
-								}
-								if ((posY > 37.5) && (posY <= 60)) {
-									var dy=posY-37.5
-								}
-								// x1=x1-dX
-								// y1=y1-dY
-								x1=last_x
-								y1=last_y
-								var length = Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
-								var angle  = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
-								var transform = 'rotate('+angle+'deg)';
-									line = $('<div>')
-									.appendTo('#iC')
-									.addClass('line')
-									.css({
-									  'position': 'absolute',
-									  'transform': transform
-									})
-									.width(length)
-									.offset({left: x1, top: y1});
-					//	}
-					}
+							var offY=(y1<y2)? y1:y2;
+							var offX=(x1<x2)? x1:x2;
+							if (dragging) {
+								if (startLine) $('.line').fadeOut(100, function(){ $(this).remove(); });
+									dX=0
+									dY=0
+									if ((posX > 37.5) && (posX <= 60)) {
+										var dX=posX-37.5
+									}
+									if ((posY > 37.5) && (posY <= 60)) {
+										var dy=posY-37.5
+									}
+
+									x1=last_x
+									y1=last_y
+									var length = Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+									var angle  = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+									var transform = 'rotate('+angle+'deg)';
+										line = $('<div>')
+										.appendTo('#iC')
+										.addClass('line')
+										.css({
+										  'position': 'absolute',
+										  'transform': transform
+										})
+										.width(length)
+										.offset({left: offX, top: offY});
+							}
+						}
 
 	/*					Automation?
 						c=0

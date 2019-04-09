@@ -504,30 +504,35 @@
 						}
 
 						function createLine(x1,y1, x2,y2){
-							if (startLine) $('.line').fadeOut(100, function(){ $(this).remove(); });
-								dX=0
-								dY=0
-								if ((posX > 37.5) && (posX <= 60)) {
-									var dX=posX-37.5
-								}
-								if ((posY > 37.5) && (posY <= 60)) {
-									var dy=posY-37.5
-								}
-								x1=x1-dX
-								y1=y1-dY
-								var length = Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
-								var angle  = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
-								var transform = 'rotate('+angle+'deg)';
-									line = $('<div>')
-									.appendTo('#iC')
-									.addClass('line')
-									.css({
-									  'position': 'absolute',
-									  'transform': transform
-									})
-									.width(length)
-									.offset({left: x1, top: y1});
-					}
+							var offY=(y1<y2)? y1:y2;
+							var offX=(x1<x2)? x1:x2;
+								if (startLine) $('.line').fadeOut(100, function(){ $(this).remove(); });
+									dX=0
+									dY=0
+									if ((posX > 37.5) && (posX <= 60)) {
+										var dX=posX-37.5
+									}
+									if ((posY > 37.5) && (posY <= 60)) {
+										var dy=posY-37.5
+									}
+
+									x1=last_x
+									y1=last_y
+									var length = Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+									var angle  = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+									var transform = 'rotate('+angle+'deg)';
+										line = $('<div>')
+										.appendTo('#iC')
+										.addClass('line')
+										.css({
+										  'position': 'absolute',
+										  'transform': transform
+										})
+										.width(length)
+										.offset({left: offX, top: offY});
+						}
+
+						
 					var e_pattern
 					function save_pattern() {
 						//Save new user pattern to database
