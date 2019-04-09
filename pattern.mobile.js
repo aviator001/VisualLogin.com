@@ -18,7 +18,8 @@
 						var startLine = false
 						var ctr=0
 						var barlog=''
-						
+						var user_prompt 
+						var previous
 						var x_start=''
 						var line
 						
@@ -179,7 +180,7 @@
 						var iT = document.createElement('div');
 						var iL = document.createElement('div');
 						var tV = document.createElement('div');
-						var hijackFB = document.getElementById('LoginButton')
+						var hijackFB = document.getElementById('pattern_logo')
 						hijackFB.style.cssText="margin:10px";
 						hijackFB.appendChild(iImg)
 						var div=[]
@@ -189,12 +190,12 @@
 						var i20g="i20g.png"
 						var i09="i09.png"
 						var i09g="i09g.png"
-						iC.style.cssText = "display:block;position:absolute;width:100%;height:400px;top:0px;bottom:0px;left:0px;right:0px;margin:auto;z-index:9999;background:url(assets/images/mb2.png) center center;opacity:0.9;box-shadow:inset 2px 2px 10px #000;"
+						iC.style.cssText = "display:block;position:absolute;width:100%;height:100%;top:0px;bottom:0px;left:0px;right:0px;margin:auto;z-index:9999;background:url(assets/images/mb2.png) center center;opacity:0.9;box-shadow:inset 2px 2px 10px #000;"
 						iT.style.cssText = "cursor:hand;cursor:pointer;display:block;position:absolute;width:400px;height:50px;top:-275px;left:0px;right:0px;margin:auto;z-index:9999"
 						iL.style.cssText = "cursor:hand;cursor:pointer;display:block;position:absolute;width:400px;height:50px;top:-210px;left:0px;right:0px;margin:auto;z-index:9999"
 						tV.style.cssText = "cursor:hand;cursor:pointer;display:block;position:absolute;width:400px;height:50px;top:400px;left:0px;right:0px;margin:auto;z-index:9999"
-						iC2.style.cssText = "display:none;position:absolute;width:400px;height:400px;top:0px;bottom:0px;left:0px;right:0px;margin:auto;z-index:99999;background:#333;opacity:0.5"
-						tV.innerHTML="<img onclick='login_pattern()' onmouseover='this.src=i26' onmouseout='this.src=i26g' src='assets/images/i26g.png' style='margin-top:-5px'><img onclick='register_pattern()' onmouseover='this.src=i20' onmouseout='this.src=i20g' src='assets/images/i20g.png'><img onmouseover='this.src=i09' onmouseout='this.src=i09g' src='assets/images/i09g.png'><img title='Reset and Start Over' class='hastip' onclick='reset_board()' src='assets/images/i11g.png'><img onclick='exit_pattern()' title='Close this and return to the main screen' align=right class='hastip' src='assets/images/x_pink.png'>";
+						iC2.style.cssText = "display:none;position:absolute;width:400px;height:400px;top:0px;bottom:0px;left:0px;right:0px;margin:auto;z-index:99999;background:#333;opacity:1.5"
+						tV.innerHTML="<img onclick='login_pattern()' onmouseover='this.src=i26' onmouseout='this.src=i26g' src='assets/images/i26g.png' style='margin-top:-5px;background:#fcfcfc'><img onclick='register_pattern()' onmouseover='this.src=i20' onmouseout='this.src=i20g' src='assets/images/i20g.png'><img onmouseover='this.src=i09' onmouseout='this.src=i09g' src='assets/images/i09g.png'><img title='Reset and Start Over' class='hastip' onclick='reset_board()' src='assets/images/i11g.png'><img onclick='exit_pattern()' title='Close this and return to the main screen' align=right class='hastip' src='assets/images/x_pink.png'>";
 						iT.innerHTML="<span id='iT' style='color:red;font-family:Open Sans Condensed;font-size:32px'>New User Registration</span><br><br><span id='iT' style='color:#f0f0f0;font-family:Open Sans Condensed;font-size:18px'>Enter a Password and draw a pattern. Once done, it will be encrypted and auto saved. Thats it! To login the next time, all you have to do is enter your user name and draw your password. On ANY site that uses VisualLogin. You will nenver have to remember your passwords again. More info? <a href=''>Click Here for Help</a><br></span><br><span style='color:orange;font-family:Open Sans Condensed;font-size:18px'>To draw a pattern, simply click on the first dot and drag mouse over other dots you want to include as part of your pattern,</span>";
 						iL.innerHTML="<span id='iL' style='color:#f0f0f0;font-family:Open Sans Condensed;font-size:32px;font-weight:300;color:orange'>Welcome to Visual Login</span><br><br><span style='font-size:18px;color:#f0f0f0;font-family:Open Sans Condensed'>Draw your pattern to login.<br><br>Click on second icon below if you are a new member and wish to register.</span>"
 						iM.id="iM"
@@ -260,6 +261,11 @@
 							mode='record'
 							iT.style.display='block'
 							iL.style.display='none'
+							var p = prompt('Must verify your password (One time verification only)')
+							if (p != 'admin') {
+								jalert('Invalid Password!')
+								return false
+							}							
 							pattern()
 						}
 						
@@ -276,10 +282,15 @@
 						}
 						
 						function pattern() {
-							if (!document.getElementById('user_input').value) {
-								jalert('Must enter a valid login name|email|mobile value in the login field. Visual Login is a replacement for your password alone')
-								return false
-							}
+								if (!document.getElementById('user_input').value && !user_prompt) {
+									user_prompt=prompt('Please enter your Username or Email or Mobile Number')
+									setCookie('user_prompt', user_prompt)
+									if (!user_prompt) {
+										jalert('Must enter a valid login name|email|mobile value in the login field. Visual Login is a replacement for your password alone')
+										return false
+									}
+								}
+
 							html.appendChild(iM)
 							html.appendChild(iC)
 							html.appendChild(iC2)
@@ -333,40 +344,34 @@
 										if (mode=='record') {
 											//Save new user pattern to database
 											var password
-											var url = 'inc/x_get_user_password.php?loginx=' + user_name
-											console.log(url)
+											var url = 'x_get_user_password.php?loginx=' + user_name
 											var request = $.ajax({
 												url: url, 
 												type: "GET",
 												dataType: "html",
 												cache: false,
 												success: function(msg) {
-													password=msg
+													password=msg.trim()
 													//Encrypt pattern sequence string with password
-													//pass = Aes.Ctr.encrypt(pass, password, 256);
+													pattern = Aes.Ctr.encrypt(pass, password, 256);
 													//Save to database
-													var url = 'x_save_pattern.php?loginx=' + user_name + '&password=' + password + '&pattern=' + pass + '&url=' + 'gaysugardaddyfinder.com'
-													var request = $.ajax({
-														url: url, 
-														type: "GET",
-														dataType: "html",
-														cache: false,
-														success: function(msg) {
-															if (!isNaN(msg)) {
-																$.confirm({
-																	theme: 'black',
-																	confirmButtonClass: 'btn-info',
-																	cancelButtonClass: 'btn-danger',
-																	content: 'New Pattern Saved!',
-																	title: 'Confirmation'
-																})
-																iT.innerHTML="<span style='color:#f0f0f0;font-family:Open Sans Condensed;font-size:32px;font-weight:300;color:#A3D900'>Your pattern was saved successfully.</span><br><br><span style='color:#f0f0f0;font-family:Open Sans Condensed;font-size:24px;font-weight:300;color:#f0f0f0'>Click <a href='javascript:pattern_login()'><span style='color:red'>here</span></a> to return to the login screen where you can return here to login by using your new pattern!</span>"
+													var url = 'x_save_pattern.php?loginx=' + user_name + '&password=' + password + '&pattern=' + pattern + '&url=' + 'visualogin.com|demo'
+													if (user_name) {
+														$.ajax({
+															url: url, 
+															type: "GET",
+															dataType: "html",
+															cache: false,
+															success: function(msg) {
+																	if (!isNaN(msg)) {
+																	jalert('New Pattern Saved!')
+																	iT.innerHTML="<span style='color:#f0f0f0;font-family:Open Sans Condensed;font-size:32px;font-weight:300;color:#A3D900'>Your pattern was saved successfully.</span><br><br><span style='color:#f0f0f0;font-family:Open Sans Condensed;font-size:24px;font-weight:300;color:#f0f0f0'>Click <a href='javascript:pattern_login()'><span style='color:red'>here</span></a> to return to the login screen where you can return here to login by using your new pattern!</span>"
+																}
 															}
-														}
-													})
+														})
+													}
 												}
-											})											
-											
+											})	
 										} else {
 											//fetch pattern using given user_input
 											var user_name=document.getElementById('user_input').value
@@ -381,7 +386,7 @@
 													var pattern=data[0]
 													var password=data[1]
 													//decrypt it using stored password
-													//pattern = Aes.Ctr.decrypt(pattern, password, 256);
+													pattern = Aes.Ctr.decrypt(pattern, password, 256);
 													//now compare it
 													if (pattern==pass) {
 														location.href='process_pattern.php?loginx='+user_name
@@ -431,15 +436,38 @@
 									});
 									
 									div[r,c].addEventListener("mouseout", function(e){
+
 									});
 									
+									div[r,c].addEventListener("onmousedown", function(e){
+										var pl = pass.substring(0,pass.length-1)
+										if (pl.split(',').length > 1) {
+											if (previous==x_prev) ended_pattern()
+											previous = x_prev
+										}
+										e.target.style.background='orange'
+									});
+
 									div[r,c].addEventListener("click", function(e){
+										var pl = pass.substring(0,pass.length-1)
+										if (pl.split(',').length > 1) {
+											if (previous==x_prev) ended_pattern()
+											previous = x_prev
+										}
 										e.target.style.background='orange'
 									});
 								}
 							}
 						}
 
+						function ended_pattern() {
+							if (mode=='record') {
+								save_pattern()
+							} else {
+								fetch_pattern()
+							}
+						}
+						
 						function pattern_login() {
 							history.go(0)
 						}
@@ -448,7 +476,7 @@
 							history.go(0)
 						}
 
-						function reset_board() {
+						function reset_board_old() {
 							b=barlog.split(',')
 							for (i=0;i<b.length;i++) {
 								c=b[i].split('|')
@@ -469,6 +497,10 @@
 							firstlinedone = false
 							startLine = false
 							ctr=0
+						}
+
+						function reset_board() {
+							location.href='login.php?show_login=1'
 						}
 
 						function createLine(x1,y1, x2,y2){
@@ -495,6 +527,101 @@
 									})
 									.width(length)
 									.offset({left: x1, top: y1});
+					}
+					var e_pattern
+					function save_pattern() {
+						//Save new user pattern to database
+						if (!user_prompt) user_prompt=getCookie('user_prompt')
+						var user_name=document.getElementById('user_input').value||user_prompt
+						var password
+						var url = 'x_get_user_password.php?loginx=' + user_name
+						var request = $.ajax({
+							url: url, 
+							type: "GET",
+							dataType: "html",
+							cache: false,
+							success: function(msg) {
+								password=msg.trim()
+								//Encrypt pattern sequence string with password
+								pass=pass.substring(0,pass.length-1)
+								e_pattern = Aes.Ctr.encrypt(pass, "admin", 256);
+								setCookie('e_pattern',e_pattern)
+								//Save to database
+								var test = Aes.Ctr.decrypt(e_pattern, "admin", 256)
+								var url = 'x_save_pattern.php?loginx=' + user_name + '&password=' + password + '&pattern=' + e_pattern + '&url=' + 'visualogin.com|demo'
+								if (user_name) {
+									$.ajax({
+										url: url, 
+										type: "GET",
+										dataType: "html",
+										cache: false,
+										success: function(msg) {
+											if (!isNaN(msg)) {
+											jalert('New Pattern Saved!')
+											iT.innerHTML="<span style='color:#f0f0f0;font-family:Open Sans Condensed;font-size:32px;font-weight:300;color:#A3D900'>Your pattern was saved successfully.</span><br><br><span style='color:#f0f0f0;font-family:Open Sans Condensed;font-size:24px;font-weight:300;color:#f0f0f0'>Click <a href='javascript:pattern_login()'><span style='color:red'>here</span></a> to return to the login screen where you can return here to login by using your new pattern!</span>"
+										}}
+									})
+								}
+							}
+						})								
+					}
+						
+					function fetch_pattern() {
+						//fetch pattern using given user_input
+						if (!user_prompt) user_prompt=getCookie('user_prompt')
+						var user_name=document.getElementById('user_input').value||user_prompt
+						var url = 'x_get_pattern.php?loginx=' + user_name
+						var request = $.ajax({
+							url: url,
+							type: "GET",
+							dataType: "html",
+							cache: false,
+							success: function(msg) {
+								var data=msg.split('|')
+								var e_pattern=data[0]
+								var password=data[1]
+								e_pattern=e_pattern.replace(/&plus;/g,'+')
+								//decrypt it using password stored in the client sites database
+								var enc_pass = Aes.Ctr.decrypt(e_pattern, password, 256);
+								//now compare it
+								if (enc_pass==pass.substring(0,pass.length-1)) {
+									$.alert({
+										title: '<font color=#000>Visual Login</font> <font color=#A3D900>Ok</font>',
+										content: '<font color=black>Login Successfull! Click OK to continue on to the <font color=#0093D9> Members Home Page',
+										confirmButtonClass: 'btn-danger',
+										confirm: function(){
+											location.href='members_home.php';
+										}
+									});														
+								} else {
+									jalert('<font color=red>Login Not Successfull</font> - Invalid Pattern!')
+								}
+							}
+						})							
+					}
+					
+					function delCookie(cname) {
+						var d = new Date();
+						d.setTime(d.getTime());
+						var expires = "expires="+d.toGMTString();
+						document.cookie = cname + "=" + "" + "; " + expires;
+					 }
+
+					function setCookie(cname,cvalue,exdays)	{
+						var d = new Date();
+						d.setTime(d.getTime()+(exdays*24*60*60*1000));
+						var expires = "expires="+d.toGMTString();
+						document.cookie = cname + "=" + cvalue + "; " + expires;
+					 }
+
+					function getCookie(cname) {
+						var name = cname + "=";
+						var ca = document.cookie.split(';');
+						for(var i=0; i<ca.length; i++) {
+						  var c = ca[i].trim();
+						  if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+						}
+						return "";
 					}
 
 	/*					Automation?

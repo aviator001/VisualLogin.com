@@ -327,7 +327,6 @@ function find_ticket_x() {
 		pass = document.getElementById('pass')
 		email = document.getElementById('email')
 		login = document.getElementById('login')
-		age = document.getElementById('age')
 		if ( document.getElementById('form_errors')) form_errors = document.getElementById('form_errors')
 		if (!mobile.value) {
 			show_error_reg(mobile)
@@ -348,7 +347,7 @@ function find_ticket_x() {
 			show_error_reg(login)
 			validate = false
 		}
-/*		if (form_errors) {
+		if (form_errors) {
 			form_errors.style.display='block'
 			form_errors.style.display='block'
 			form_errors.style.fontSize='18px'
@@ -356,7 +355,6 @@ function find_ticket_x() {
 			form_errors.style.fontFamily='Open Sans Condensed'
 			form_errors.style.textAlign='left'
 		}
-*/
 		if (validate == true) create_user()
 			else form_errors.innerHTML = '<i class="fa fa-frown-o"></i>Error(s) found.</i>'
 	}	
@@ -634,8 +632,6 @@ function find_ticket_x() {
 	function create_user() {
 		clean_cookies()
 		var x = ''
-		validate_code()
-		/*
 		document.getElementById('pay_modal').style.display='block'
 		document.getElementById('wait').style.display='block'
 		document.getElementById('spl_text').innerHTML='GENERATING VALIDATION CODE, PLEASE WAIT'
@@ -657,7 +653,6 @@ function find_ticket_x() {
 					}
 				}
 			})
-		*/
 		}
 		
 	function send_code() {
@@ -770,32 +765,20 @@ function find_ticket_x() {
 		}
 
 		function validate_code() {
-				var url='inc/x_get_city_state_zip.php?lat='+getCookie('lat')+'&lng='+getCookie('lng')
-				console.log(url)
-				var request = $.ajax({
-					url: url,
-					type: "GET",
-					dataType: "html",
-					cache: false,
-					success: function(msg) {
-						setCookie('location',msg)
-					}
-				})
-			if (getCookie('location')) {
-				var lxc=getCookie('location').trim()
-				lx=lxc.split(',')
-				var cc_city = lx[0]
-				var cc_state=lx[1]
-				var cc_location = cc_city + ', ' + cc_state + ' ' + getCookie('zipcode')
-				var x=''
-			}
-/*			v1=document.getElementById('v1').value
+			var lx=getCookie('location')
+			lx=lx.split(',')
+			var cc_street=lx[0]
+			var cc_city = lx[1]
+			var cc_s=lx[2].trim().split(' ')
+			var cc_state=cc_s[0]
+			var cc_location = cc_city + ', ' + cc_state + ' ' + getCookie('zipcode')
+			var x=''
+			v1=document.getElementById('v1').value
 			v2=document.getElementById('v2').value
 			v3=document.getElementById('v3').value
 			v4=document.getElementById('v4').value
 			var vc = (v1+v2+v3+v4)
 			if (vc == digit_code) {
-*/				
 				document.getElementById('bo').style.display='none'
 				x += 'mob=' + document.getElementById('mobile').value 
 				x += '&password=' + document.getElementById('pswd').value 
@@ -812,7 +795,7 @@ function find_ticket_x() {
 				x += '&aff=' + getCookie('aff')
 				x += '&pro=' + Math.random() * 100000000 + '' + Math.random() * 100000000 + '' + Math.random() * 100000000 + '' + Math.random() * 100000000 + '' + Math.random() * 100000000
 				document.getElementById('wait').style.display='block'
-//				document.getElementById('spl_text').innerHTML='CODE VERIFIED SUCCESSFULLY. PLEASE WAIT'
+				document.getElementById('spl_text').innerHTML='CODE VERIFIED SUCCESSFULLY. PLEASE WAIT'
 					var url = 'create.php?' + x
 					console.log(url)
 					var request = $.ajax({
@@ -827,13 +810,13 @@ function find_ticket_x() {
 									return false
 							} else {
 									document.getElementById('wait').style.display='none'
-//									document.getElementById('pay_modal').style.zIndex='1'
+									document.getElementById('pay_modal').style.zIndex='1'
 									jalert('Account created succesfully')
 									location.href='home.php?page=my_account&first=true'
 							}
 						}
 					})
-/*			} else {
+			} else {
 				document.getElementById('bo').style.display='none'
 				document.getElementById('pay_modal').style.zIndex='1'
 				document.getElementById('v1').value=''
@@ -844,7 +827,6 @@ function find_ticket_x() {
 				document.getElementById('pay_modal').style.zIndex='1'
 				jalert('Code Validation Failure','document.all.bo.style.display=block',1,0,'Try Again')
 			}
-*/
 	}
 
 	function login() {

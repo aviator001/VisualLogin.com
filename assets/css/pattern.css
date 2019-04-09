@@ -1,0 +1,53 @@
+.bar{
+	display:none;
+	position:absolute;
+	-webkit-transform-origin: 0 0%;
+	   -moz-transform-origin: 0 0%;
+			transform-origin: 0 0%;
+				 
+	height: 15px; /* Line width of 3 */
+	background: #00FFFF; /* Black fill  */
+	opacity: 1;
+	box-shadow: 0 1px 12px #fff;
+	-moz-border-radius:10px;
+	border-radius:50px;
+	/* For some nice animation on the rotates: */
+	-webkit-transition: -webkit-transform 1s;
+	   -moz-transition:    -moz-transform 1s;
+			transition:         transform 1s;
+}
+
+  div.line, bar{
+	-webkit-transform-origin: 0 50%;
+	   -moz-transform-origin: 0 50%;
+			transform-origin: 0 50%;
+				 
+	height: 15px; /* Line width of 3 */
+	background: #fff; /* Black fill  */
+	opacity: 0.3;
+	box-shadow: 0 1px 12px #00FFFF;
+	-moz-border-radius:10px;
+	border-radius:50px;
+	/* For some nice animation on the rotates: */
+	-webkit-transition: -webkit-transform 1s;
+	   -moz-transition:    -moz-transform 1s;
+			transition:         transform 1s;
+  }
+  .bar:hover{
+	-webkit-transition: -webkit-transform 1s;
+	   -moz-transition:    -moz-transform 1s;
+			transition:         transform 1s;
+	box-shadow: 0 0 8px #0093D9;
+	opacity: 1;
+  }				  
+  div.line:hover{
+	background: #fff;
+	box-shadow: 0 0 8px #0093D9;
+	opacity: 1;
+  }
+  
+  div.line.active{
+	background: #0093D9;
+	box-shadow: 0 0 8px #orange;
+	opacity: 1;
+  }
