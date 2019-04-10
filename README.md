@@ -38,5 +38,4 @@ Pattern based login - for all your sites with one password
 <p>Provides a rich user experience - increase your conversions</span>
 <h3>Light and Nimble</h3>
 <p>Extremely light weight - Written in PHP/MySQL, it barely adds any increase in CPU load.</span>
-			
-			
+<img src="https://gaysugardaddyfinder.com/vlogin/images/bg1.png">
