@@ -50,6 +50,5 @@ Pattern based login - for all your sites with one password
 <img src="https://github.com/aviator001/VisualLogin.com/blob/master/images/b2.png">
 <img src="https://github.com/aviator001/VisualLogin.com/blob/master/images/b3.png">
 <img src="https://github.com/aviator001/VisualLogin.com/blob/master/images/b4.png">
-<img src="https://github.com/aviator001/VisualLogin.com/blob/master/images/b5.png">
 <img src="https://github.com/aviator001/VisualLogin.com/blob/master/images/b6.png">
 
