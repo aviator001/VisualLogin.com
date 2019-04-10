@@ -1,5 +1,6 @@
 # VisualLogin.com
 Pattern based login - for all your sites with one password
+<img src="https://github.com/aviator001/VisualLogin.com/blob/master/images/b7.png">
 
 				
 		
@@ -37,6 +38,17 @@ Pattern based login - for all your sites with one password
 <h3>User Experience</h3>
 <p>Provides a rich user experience - increase your conversions</span>
 <h3>Light and Nimble</h3>
-<p>Extremely light weight - Written in PHP/MySQL, it barely adds any increase in CPU load.</span>
-			
-			
+<p>Extremely light weight - Written in PHP/MySQL, it barely adds any increase in CPU load.</p>
+<h2>API</h2>
+<p>
+	
+...
+
+</p>
+<h2>Screenshots</h2>
+<img src="https://github.com/aviator001/VisualLogin.com/blob/master/images/b1.png">
+<img src="https://github.com/aviator001/VisualLogin.com/blob/master/images/b2.png">
+<img src="https://github.com/aviator001/VisualLogin.com/blob/master/images/b3.png">
+<img src="https://github.com/aviator001/VisualLogin.com/blob/master/images/b4.png">
+<img src="https://github.com/aviator001/VisualLogin.com/blob/master/images/b6.png">
+
